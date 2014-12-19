@@ -1,7 +1,6 @@
-var args = process.argv.slice(2);
-var total = 0;
-args.forEach(function (arg) {
-  total += (+arg);
-});
+var fs = require('fs');
 
-console.log(total);
+var path = process.argv[2];
+
+var file = fs.readFileSync(path);
+console.log(file.toString().split('\n').length - 1);
