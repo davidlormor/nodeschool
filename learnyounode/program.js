@@ -1,13 +1,10 @@
-var fileFilter = require('./fileFilter');
+var http = require('http');
 
-var dir = process.argv[2];
-var ext = process.argv[3];
+var url = process.argv[2];
 
-fileFilter(dir, ext, function (err, data) {
-  if(err) {
-    return console.log('You received the following error: ' + err);
-  }
-  data.forEach(function (file) {
-    console.log(file);
+http.get(url, function (res) {
+  res.setEncoding('utf8');
+  var data = res.on('data', function (data) {
+    console.log(data);
   });
 });
