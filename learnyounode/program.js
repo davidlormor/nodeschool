@@ -1,13 +1,18 @@
 var http = require('http');
 var concat = require('concat-stream');
+var async = require('async');
+var urls = [process.argv[2], process.argv[3], process.argv[4]];
 
-var url = process.argv[2];
+function getData (url, callback) {
+  http.get(url, function (res) {
+    res.on('error', console.error);
+    res.pipe(concat(function (data) {
+      console.log(data.toString());
+      callback();
+    }));
+  });
+}
 
-http.get(url, function (res) {
-  res.on('error', console.error);
-  res.pipe(concat(function (data) {
-    var string = data.toString();
-    console.log(string.length);
-    console.log(string);
-  }));
+async.eachSeries(urls, getData, function (err) {
+  console.error(err);
 });
