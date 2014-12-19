@@ -1,9 +1,11 @@
-var net = require('net');
-var moment = require('moment');
-var port = process.argv[2];
+var http = require('http');
+var fs = require('fs');
 
-var server = net.createServer(function (client) {
-  client.end(moment().format('YYYY-MM-DD HH:mm'));
+var port = process.argv[2];
+var file = process.argv[3];
+
+var server = http.createServer(function (req, res) {
+  fs.createReadStream(file).pipe(res);
 });
 
 server.listen(port);
