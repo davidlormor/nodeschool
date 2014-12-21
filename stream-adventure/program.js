@@ -1,18 +1,10 @@
-var through = require('through');
-var split = require('split');
-var tr = through(write);
-var line = 0;
+var concat = require('concat-stream');
 
-function write(data) {
-  line++;
-  var string = data.toString();
-  this.queue(line % 2 === 0 ?
-    string.toUpperCase() + '\n' :
-    string.toLowerCase() + '\n'
+process.stdin.pipe(concat(function (buf) {
+  console.log(buf
+    .toString()
+    .split("")
+    .reverse()
+    .join("")
   );
-}
-
-process.stdin
-  .pipe(split())
-  .pipe(tr)
-  .pipe(process.stdout);
+}));
